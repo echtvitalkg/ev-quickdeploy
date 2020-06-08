@@ -41,7 +41,3 @@ Some of these will restrict access to certain settings for you. Some options are
 * Disable and block user from editing Windows Update settings (Pro only)
 * Disable Windows Store
 
-## Changelog
-
-#### June 06, 2020
-* First release
