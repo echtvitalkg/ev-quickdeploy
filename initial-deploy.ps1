@@ -1,5 +1,5 @@
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-choco install -y firefox googlechrome office365business 7zip.install adobereader vlc greenshot anydesk
+choco install -y firefox googlechrome office365business 7zip.install adobereader vlc greenshot anydesk thunderbird openvpn
 choco install -y choco-upgrade-all-at-startup
 reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection /v MicrosoftEdgeDataOptIn /t REG_DWORD /d 0
 reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer /v NoAutorun /t REG_DWORD /d 1
@@ -150,3 +150,5 @@ reg delete HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU /v Schedule
 reg delete HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU /v ScheduledInstallFourthWeek
 reg delete HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU /v ScheduledInstallSecondWeek
 reg delete HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU /v ScheduledInstallThirdWeek
+Invoke-WebRequest "https://www.dwservice.net/download/dwagent_x86.exe" -OutFile ".\dwagent_x86.exe"
+.\dwagent_x86.exe
