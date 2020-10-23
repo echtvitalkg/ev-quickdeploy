@@ -143,3 +143,17 @@ choco install -y firefox googlechrome office365business 7zip.install adobereader
 choco install -y choco-upgrade-all-at-startup
 Invoke-WebRequest "https://www.dwservice.net/download/dwagent_x86.exe" -OutFile ".\dwagent_x86.exe"
 .\dwagent_x86.exe
+Write-Host "Create UserAdmin Account and demote current user"
+$pwd1 = Read-Host "Password" -AsSecureString
+$pwd2 = Read-Host "Re-enter Password" -AsSecureString
+$pwd1_text = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($pwd1))
+$pwd2_text = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($pwd2))
+if ($pwd1_text -ceq $pwd2_text) {
+Write-Host "Passwords matched"
+New-LocalUser "FAdmin" -Password $pwd1 -FullName "UserAdmin" -Description "Lokaler Administrator"
+Add-LocalGroupMember -Group "Administratoren" -Member "FAdmin"
+Add-LocalGroupMember -Group "Benutzer" -Member $env:UserName
+Remove-LocalGroupMember -Group "Administratoren" -Member $env:UserName
+} else {
+Write-Host "Passwords differ"
+}
