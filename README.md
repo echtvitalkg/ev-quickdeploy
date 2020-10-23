@@ -41,3 +41,5 @@ Some of these will restrict access to certain settings for you. Some options are
 * Disable and block user from editing Windows Update settings (Pro only)
 * Disable Windows Store
 
+### Misc stuff
+* Add "UserAdmin" account and demote current user to standard
