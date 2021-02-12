@@ -1,3 +1,4 @@
+Write-Host "Setting some settings..."
 reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection /v MicrosoftEdgeDataOptIn /t REG_DWORD /d 0
 reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer /v NoAutorun /t REG_DWORD /d 1
 reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer /v NoDriveTypeAutoRun /t REG_DWORD /d 255
@@ -138,12 +139,13 @@ reg add HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU /v ScheduledIn
 reg add HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU /v ScheduledInstallEveryWeek /t REG_DWORD /d 1
 reg add HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU /v ScheduledInstallTime /t REG_DWORD /d 17
 reg add HKLM\SOFTWARE\Policies\Microsoft\WindowsStore /v RemoveWindowsStore /t REG_DWORD /d 1
+Write-Host "Installing some software..."
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 choco install -y firefox googlechrome office365business 7zip.install adobereader vlc greenshot anydesk thunderbird openvpn
 choco install -y choco-upgrade-all-at-startup
 Invoke-WebRequest "https://www.dwservice.net/download/dwagent_x86.exe" -OutFile ".\dwagent_x86.exe"
 .\dwagent_x86.exe
-Write-Host "Create UserAdmin Account and demote current user"
+Write-Host "Create UserAdmin Account and demote current user..."
 $pwd1 = Read-Host "Password" -AsSecureString
 $pwd2 = Read-Host "Re-enter Password" -AsSecureString
 $pwd1_text = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($pwd1))
@@ -154,6 +156,13 @@ New-LocalUser "FAdmin" -Password $pwd1 -FullName "UserAdmin" -Description "Lokal
 Add-LocalGroupMember -Group "Administratoren" -Member "FAdmin"
 Add-LocalGroupMember -Group "Benutzer" -Member $env:UserName
 Remove-LocalGroupMember -Group "Administratoren" -Member $env:UserName
+Set-LocalUser "FAdmin" -PasswordNeverExpires:$True
 } else {
 Write-Host "Passwords differ"
 }
+Write-Host "Change computer name..."
+$compname = Read-Host "New computer name"
+Rename-Computer -NewName $compname
+Write-Host "Opening some windows to make stuff easier for you..."
+Start-Process ms-settings:defaultapps
+Write-Host "That's all. Thanks!"
