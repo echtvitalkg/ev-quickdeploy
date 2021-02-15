@@ -141,7 +141,7 @@ reg add HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU /v ScheduledIn
 reg add HKLM\SOFTWARE\Policies\Microsoft\WindowsStore /v RemoveWindowsStore /t REG_DWORD /d 1
 Write-Host "Installing some software..."
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-choco install -y firefox googlechrome office365business 7zip.install adobereader vlc greenshot anydesk thunderbird openvpn
+choco install -y firefox googlechrome office365business 7zip.install adobereader vlc greenshot anydesk thunderbird openvpn pdf24
 choco install -y choco-upgrade-all-at-startup
 Invoke-WebRequest "https://www.dwservice.net/download/dwagent_x86.exe" -OutFile ".\dwagent_x86.exe"
 .\dwagent_x86.exe
