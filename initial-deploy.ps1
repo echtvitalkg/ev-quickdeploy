@@ -139,6 +139,14 @@ reg add HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU /v ScheduledIn
 reg add HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU /v ScheduledInstallEveryWeek /t REG_DWORD /d 1
 reg add HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU /v ScheduledInstallTime /t REG_DWORD /d 17
 reg add HKLM\SOFTWARE\Policies\Microsoft\WindowsStore /v RemoveWindowsStore /t REG_DWORD /d 1
+Write-Host "Removing preinstalled O365 Click-To-Run..."
+# Thanks to /u/timurleng for this snippet
+$OfficeUninstallStrings = (Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | Where {$_.DisplayName -like "*Microsoft Office 365*"} | Select UninstallString).UninstallString
+    ForEach ($UninstallString in $OfficeUninstallStrings) {
+        $UninstallEXE = ($UninstallString -split '"')[1]
+        $UninstallArg = ($UninstallString -split '"')[2] + " DisplayLevel=False"
+        Start-Process -FilePath $UninstallEXE -ArgumentList $UninstallArg -Wait
+    }
 Write-Host "Installing some software..."
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 choco install -y firefox googlechrome office365business 7zip.install adobereader vlc greenshot anydesk thunderbird openvpn pdf24
